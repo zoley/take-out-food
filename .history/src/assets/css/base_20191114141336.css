@@ -1,0 +1,8 @@
+/*公用基本样式*/
+.z-flex{display:flex;justify-content: flex-start;align-items: center;}
+.icon-font{background: #fff;border-radius:2px;font-size:14px;}
+.red-color{font-size:#F56C6C;}
+.blue-color{font-size:#409EFF;}
+.green-color{font-size:#67C23A;}
+.orange-color{font-size:#E6A23C;}
+.gray-color{font-size:#909399;}

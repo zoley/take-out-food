@@ -32,6 +32,7 @@ export default{
   .layout{
     .nav{
       width:100%;
+      background: #fff;
       .nav-item{
         flex:1;
         text-align: center;

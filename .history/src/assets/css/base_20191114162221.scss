@@ -1,0 +1,9 @@
+@import './variables';
+/*公用基本样式*/
+.z-flex{display:flex;justify-content: flex-start;align-items: center;}
+.font-special{background: #fff;border-radius:2px;font-size:14px;padding:2px 6px;}
+.red-color{color:$red;}
+.blue-color{color:$blue;}
+.green-color{color:$green;}
+.orange-color{color:$orange;}
+.gray-color{color:$gray;}

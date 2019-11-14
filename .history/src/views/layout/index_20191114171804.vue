@@ -30,6 +30,7 @@ export default{
 </script>
 <style scoped lang="scss">
   .layout{
+    background: #fff;
     .nav{
       width:100%;
       .nav-item{

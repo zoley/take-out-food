@@ -12,7 +12,7 @@ export default {
 </script>
 <style scoped lang="scss">
   .goods{
-    height:calc(100vh - 154px);
+    height:calc(100vh - 124px);
     background: #fff;
   }
 </style>

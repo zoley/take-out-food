@@ -19,9 +19,6 @@ export default{
     return{
     }
   },
-  components:{
-    zHeader
-  },
   mounted(){
   },
   methods:{
