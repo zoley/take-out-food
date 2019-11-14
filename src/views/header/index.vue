@@ -9,37 +9,81 @@
         <p class="desc">{{header.description}} / {{header.deliveryTime}}分钟送达</p>
         <p class="support"><b class="font-special red-color">减</b>{{header.supports && header.supports[0].description}}</p>
       </div>
-      <div class="support-num">
-        <span>{{header.supports.length}} 个</span>  
+      <div class="support-num" @click="changeMask">
+        <span>{{header.supports && header.supports.length}} 个</span>  
         <i class="iconfont icon-right"></i>
       </div>
     </div>
-    <div class="header-bottom z-flex">
+    <div class="header-bottom z-flex" @click="changeMask">
       <b class="font-special">公告</b>
       <p class="bulletin">{{header.bulletin}}</p>
       <i class="iconfont icon-right"></i>
     </div>
     <img class="bg-fix" :src="header.avatar" alt="">
+    <div class="mask" v-show="showMask">
+      <div class="actual-content">
+        <h1 class="title">{{header.name}}</h1>
+        <star :score="header.score" :size="size"/>
+        <div class="line-box z-flex">
+          <div class="line"></div>
+          <div class="text">优惠信息</div>
+          <div class="line"></div>
+        </div>
+        <ul class="ul">
+          <li v-for="(item,i) in header.supports" :key="i">
+            <b v-if="item.type===0" class="font-special red-color">减</b>
+            <b v-if="item.type===1" class="font-special blue-color">折</b>
+            <b v-if="item.type===2" class="font-special green-color">特</b>
+            <b v-if="item.type===3" class="font-special orange-color">惠</b>
+            {{item.description}}
+          </li>
+        </ul>
+        <div class="line-box z-flex">
+          <div class="line"></div>
+          <div class="text">商家公告</div>
+          <div class="line"></div>
+        </div>
+        <div class="declare">{{header.bulletin}}</div>
+      </div>
+      <div class="actual-footer z-flex" @click="changeMask">
+        <i class="iconfont icon-close"></i>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-
 import request from '@/utils/request'
+
+import star from '@/components/star/index'
 export default {
   data() {
     return {
-      header:{}
+      header:{},
+      showMask:false,
+      size:18
     };
+  },
+  components:{
+    star
   },
   mounted() {
     this.getHeaderData();
   },
   methods: {
+    /**
+     * 获取header数据
+     */
     getHeaderData(){
       request.get('/api/seller').then((res)=>{
         this.header=Object.assign({},res.data);
       })
+    },
+    /**
+     * 改变遮罩层显示与否
+     */
+    changeMask(){
+      this.showMask=!this.showMask;
     }
   }
 };
@@ -92,7 +136,6 @@ export default {
             font-size:15px;
             border-radius:$light-radius;
             padding:2px 6px;
-            padding-top:0;
             margin-right:10px;
           }
         }
@@ -110,6 +153,10 @@ export default {
         padding:0px 10px;
         color:white;
         background: rgba(0,0,0,0.2);
+        .iconfont{
+          position:relative;
+          top:2px;
+        }
       }
     }
     .header-bottom{
@@ -129,6 +176,63 @@ export default {
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
+      }
+    }
+    .mask{
+      position:fixed;
+      top:0;
+      left:0;
+      bottom:0;
+      right:0;
+      z-index:100;
+      background: rgba(7,17,27,0.9);
+      color:white;
+      overflow: auto;
+      .actual-content{
+        min-height:100vh;
+        padding-bottom:70px;
+        overflow:hidden;
+        box-sizing: border-box;
+        .title{
+          text-align: center;
+          margin:50px 0 15px;
+          font-size:16px;
+          font-weight: 600;
+        }
+        .line-box{
+          width:80%;
+          margin:20px auto 10px;
+          .line{
+            flex:1;
+            height:0;
+            border-bottom:1px solid rgba(255,255,255,0.5);
+          }
+          .text{
+            padding:0 20px;
+            font-size:14px;
+          }
+        }
+        .ul{
+          width:72%;
+          margin:10px auto;
+          li{
+            line-height: 30px;
+          }
+        }
+        .declare{
+          width:72%;
+          margin:10px auto;
+          line-height: 24px;
+        }
+      }
+      .actual-footer{
+        margin-top:-70px;
+        justify-content: center;
+        .iconfont{
+          font-size:24px;
+          color:white;
+          padding:20px;
+        }
       }
     }
   }
