@@ -32,9 +32,21 @@ export default{
   .layout{
     .nav{
       width:100%;
+      height:40px;
+      background: white;
+      border-bottom:1px solid rgba(7,17,27,0.1);
+      box-sizing: border-box;
       .nav-item{
         flex:1;
         text-align: center;
+        color:rgb(77,85,93);
+        font-size:14px;
+        text-decoration:none;
+        height:100%;
+        line-height: 40px;
+        &.router-link-active{
+          color:rgb(240,20,20);
+        }
       }
     }
   }

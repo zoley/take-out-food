@@ -54,7 +54,6 @@
 
 <script>
 import request from '@/utils/request'
-
 import star from '@/components/star/index'
 export default {
   data() {
