@@ -1,9 +1,9 @@
 <template>
   <div class="goods-wrap">
     <div class="goods z-flex">
-      <div class="goods-left" id="leftWrapper">
-        <div class="left-ul">
-          <div class="left-li z-flex" v-for="(item,index) in goods" :key="index" :class="{active:current===index}" @click="selectCondition($event,index)">
+      <div class="goods-left" ref="leftWrapper">
+        <div class="left-ul left-ul-hook">
+          <div class="left-li z-flex left-li-hook" v-for="(item,index) in goods" :key="index" :class="{active:current===index}" @click="selectCondition($event,index)">
             <span>
               <b v-if="item.type===0" class="font-special-bg red-bg">减</b>
               <b v-if="item.type===1" class="font-special-bg blue-bg">折</b>
@@ -15,9 +15,9 @@
           </div>
         </div>
       </div>
-      <div class="goods-right" id="rightWrapper">
+      <div class="goods-right" ref="rightWrapper">
         <div class="right-content">
-          <div class="right-ul" v-for="(item,index) in goods" :key="index">
+          <div class="right-ul right-ul-hook" v-for="(item,index) in goods" :key="index">
             <h2 class="right-title">{{item.name}}</h2>
             <div class="right-li z-flex" v-for="(x,y) in item.foods" :key="y">
               <img class="li-img" :src="x.icon" alt="">
@@ -45,38 +45,90 @@ export default {
   data() {
     return {
       goods:[],
-      current:0
+      listHeight:[],
+      leftScroll:null,
+      rightScroll:null,
+      scrollY:0
     };
   },
   created(){
     this.getGoodsResult();
   },  
   mounted() {
-    let leftScroll=new BScroll('#leftWrapper',{
-      scrollY:true,
-      click:true
-    });
-    let rightScroll=new BScroll('#rightWrapper',{
-      scrollY:true,
-      click:true
-    });
+    
+  },
+  computed:{
+    current(){
+      for(var i=0;i<this.listHeight.length;i++){
+        let height1=this.listHeight[i];
+        let height2=this.listHeight[i+1];
+        if(!height2 || (this.scrollY>=height1 && this.scrollY<height2)){
+          return i;
+        }
+      }
+      return 0;
+    }
+  },
+  watch:{
+    //左侧居中跟着走啊喂
+    current(val){
+      let leftDom=this.$refs.leftWrapper.getElementsByClassName('left-li-hook');
+      let curDom=leftDom[val];
+      console.log(curDom.offsetTop,curDom.offsetHeight/2,this.$refs.leftWrapper.offsetHeight/2)
+      let dis=this.$refs.leftWrapper.getElementsByClassName('left-ul-hook')[0].offsetHeight-this.$refs.leftWrapper.offsetHeight;
+      let y=curDom.offsetTop+curDom.offsetHeight/2-this.$refs.leftWrapper.offsetHeight/2;
+      if(y<=0){
+        y=0;
+      }else if(y>=dis){
+        y=dis;
+      }
+      this.leftScroll.scrollTo(0,-y);
+    }
   },
   components:{
     shopcart
   },
   methods: {
+    initScroll(){
+      this.leftScroll=new BScroll(this.$refs.leftWrapper,{
+        scrollY:true,
+        click:true
+      });
+      this.rightScroll=new BScroll(this.$refs.rightWrapper,{
+        scrollY:true,
+        click:true,
+        probeType:3
+      });
+      this.rightScroll.on('scroll',(pos)=>{
+        this.scrollY=Math.round(Math.abs(pos.y));
+      })
+    },
+    calcHeight(){
+      let rightDom=this.$refs.rightWrapper.getElementsByClassName('right-ul-hook');
+      let height=0;
+      this.listHeight.push(height);
+      for(let i=0;i<rightDom.length;i++){
+        height+=rightDom[i].offsetHeight
+        this.listHeight.push(height);
+      }
+    },
     getGoodsResult(){
       request('/api/goods').then((res)=>{
         this.goods=Object.assign([],res.data);
+        this.$nextTick(()=>{
+          this.initScroll();
+          this.calcHeight();
+        })
       }).catch((err)=>{
         console.log(err);
       })
     },
     selectCondition(e,i){
-      if(e._constructed){
+      if(!e._constructed){
         e.preventDefault();
       }
-      this.current=i;
+      let rightDom=this.$refs.rightWrapper.getElementsByClassName('right-ul-hook');
+      this.rightScroll.scrollToElement(rightDom[i],300);
     }
   }
 };
@@ -92,6 +144,7 @@ export default {
         overflow: hidden;
         width:80px;
         flex:0 0 80px;
+        position: relative;
         height:100%;
         background: #f3f5f7;
         .left-ul{
