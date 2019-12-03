@@ -27,6 +27,9 @@
                 <p class="con-sell">月售 {{x.sellCount}} 份  &nbsp;&nbsp; 好评率 {{x.rating}}%</p>
                 <p class="price"><span class="red-color">￥{{x.price}}</span><del v-if="x.oldPrice" class="gray-color">￥{{x.oldPrice}}</del></p>
               </div>
+              <div class="stepper-wrap">
+                <stepper/>
+              </div>
             </div>
           </div>
         </div>
@@ -41,6 +44,7 @@
 import request from '@/utils/request'
 import BScroll from 'better-scroll'
 import shopcart from '@/components/shopcart/index'
+import stepper from '@/components/stepper/index'
 export default {
   data() {
     return {
@@ -86,7 +90,8 @@ export default {
     }
   },
   components:{
-    shopcart
+    shopcart,
+    stepper
   },
   methods: {
     initScroll(){
@@ -226,6 +231,11 @@ export default {
                 font-size:14px;
               }
             }
+          }
+          .stepper-wrap{
+            position: absolute;
+            bottom:10px;
+            right:-8px;
           }
         }
       }
