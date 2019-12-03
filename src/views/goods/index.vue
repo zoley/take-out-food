@@ -74,15 +74,15 @@ export default {
     current(val){
       let leftDom=this.$refs.leftWrapper.getElementsByClassName('left-li-hook');
       let curDom=leftDom[val];
-      console.log(curDom.offsetTop,curDom.offsetHeight/2,this.$refs.leftWrapper.offsetHeight/2)
       let dis=this.$refs.leftWrapper.getElementsByClassName('left-ul-hook')[0].offsetHeight-this.$refs.leftWrapper.offsetHeight;
       let y=curDom.offsetTop+curDom.offsetHeight/2-this.$refs.leftWrapper.offsetHeight/2;
-      if(y<=0){
+      // console.log(curDom.offsetTop,curDom.offsetHeight/2,this.$refs.leftWrapper.offsetHeight/2,y,dis)
+      if(y<=0 || dis<=0){
         y=0;
-      }else if(y>=dis){
+      }else if(y>=dis && dis>0){
         y=dis;
       }
-      this.leftScroll.scrollTo(0,-y);
+      this.leftScroll.scrollTo(0,-y,300);
     }
   },
   components:{
