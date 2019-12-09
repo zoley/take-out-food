@@ -1,8 +1,9 @@
 <template>
   <div class="shopcart z-flex">
     <div class="cart-icon-wrap">
-      <div class="cart-icon z-flex">
+      <div class="cart-icon z-flex" :class="{highlight:selectCount>0}">
         <i class="iconfont icon-gouwuche"></i>
+        <b v-if="selectCount>0" class="select-count red-bg" >{{selectCount}}</b>
       </div>
     </div>
     <div class="cart-con z-flex">
@@ -16,6 +17,29 @@
 
 <script>
 export default {
+  props:{
+    selectFoods:{
+      type:Array,
+      default(){
+        return []
+      }
+    }
+  },
+  computed:{
+    selectCount(){
+      return this.selectFoods.reduce((prev,cur)=>{
+        return prev + cur.count;
+      },0)
+    }
+  },
+  data(){
+    return{
+
+    }
+  },
+  methods:{
+
+  }
 
 }
 </script>
@@ -53,6 +77,24 @@ export default {
         .iconfont{
           font-size:24px;
           color:rgba(255,255,255,0.4);
+        }
+        &.highlight{
+          background:#409EFF;
+          .iconfont{
+            color:white;
+          }
+        }
+        .select-count{
+          position: absolute;
+          top:-10px;
+          right:-10px;
+          color:white;
+          width:30px;
+          height:16px;
+          border-radius:15px;
+          line-height: 15px;
+          text-align: center;
+          font-weight: 400;
         }
       }
     }

@@ -1,27 +1,41 @@
 <template>
-   <div class="stepper z-flex">
-      <i v-if="count>0" class="iconfont icon-jian" @click="countReduce"></i>
-      <span v-if="count>0" class="count">{{count}}</span>
-      <i class="iconfont icon-jia" @click="countAdd"></i>
-   </div>
+  <div class="stepper z-flex">
+    <transition name="fade">
+      <i v-if="food.count>0" class="iconfont icon-jian" @click="countReduce"></i>
+    </transition>
+    <span v-if="food.count>0" class="count">{{food.count}}</span>
+    <i class="iconfont icon-jia" @click="countAdd"></i>
+  </div>
 </template>
 
 <script>
    export default {
+     props:{
+       food:{
+         type:Object,
+         default(){
+           return {
+             count:0
+           }
+         }
+       }
+     },
      data(){
        return{
-         count:0
        }
      },
      mounted(){
-       
      },
      methods:{
        countAdd(){
-         this.count++;
+         if(!this.food.hasOwnProperty('count')){
+           this.$set(this.food,'count',1)
+         }else{
+          this.food.count++;
+         }
        },
        countReduce(){
-         this.count--;
+         this.food.count--;
        }
      }
    }
@@ -43,5 +57,12 @@
         color:#5e6c71;
       }
     }
+  }
+  .fade-enter-active,.fade-leave-active{
+    transition:0.4s all ease;
+  }
+  .fade-enter,.fade-leave-to{
+    transform:translate3d(24px,0,0)rotate(180deg);
+    opacity: 0;
   }
 </style>

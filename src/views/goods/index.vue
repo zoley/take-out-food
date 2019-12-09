@@ -28,7 +28,7 @@
                 <p class="price"><span class="red-color">￥{{x.price}}</span><del v-if="x.oldPrice" class="gray-color">￥{{x.oldPrice}}</del></p>
               </div>
               <div class="stepper-wrap">
-                <stepper/>
+                <stepper :food="x"/>
               </div>
             </div>
           </div>
@@ -36,7 +36,7 @@
       </div>
     </div>
     <div class="shopcart-wrap">
-      <shopcart/>  
+      <shopcart :selectFoods="selectFoods"/>  
     </div>
   </div>
 </template>
@@ -71,6 +71,17 @@ export default {
         }
       }
       return 0;
+    },
+    selectFoods(){
+      let foods=[];
+      this.goods.forEach((good)=>{
+        good.foods.forEach((food)=>{
+          if(food.count){
+            foods.push(food);
+          }
+        });
+      })
+      return foods;
     }
   },
   watch:{
