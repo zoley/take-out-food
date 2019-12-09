@@ -1,17 +1,17 @@
 <template>
   <div class="shopcart z-flex">
     <div class="cart-icon-wrap">
-      <div class="cart-icon z-flex" :class="{highlight:selectCount>0}">
+      <div class="cart-icon z-flex" :class="{highlight:totalCount>0}">
         <i class="iconfont icon-gouwuche"></i>
-        <b v-if="selectCount>0" class="select-count red-bg" >{{selectCount}}</b>
+        <b v-if="totalCount>0" class="select-count red-bg" >{{totalCount}}</b>
       </div>
     </div>
     <div class="cart-con z-flex">
-      <b class="con-price">￥0</b>
+      <b class="con-price" :class="{highlight:totalPrice>0}">￥{{totalPrice}}</b>
       <div class="con-line"></div>
-      <span class="con-desc">另需配送费￥4元</span>
+      <span class="con-desc">另需配送费￥{{deliveryPrice}}元</span>
     </div>
-    <div class="cart-pay z-flex">￥20起送</div>
+    <div class="cart-pay z-flex" :class="{enough:totalPrice>=minPrice}">{{payDesc}}</div>
   </div>
 </template>
 
@@ -23,13 +23,40 @@ export default {
       default(){
         return []
       }
-    }
+    },
+    minPrice:{
+      type:Number,
+      default(){
+        return 20
+      }
+    },
+    deliveryPrice:{
+      type:Number,
+      default(){
+        return 4
+      }
+    },
   },
   computed:{
-    selectCount(){
+    totalCount(){
       return this.selectFoods.reduce((prev,cur)=>{
         return prev + cur.count;
       },0)
+    },
+    totalPrice(){
+      return this.selectFoods.reduce((prev,cur)=>{
+        return prev + cur.count*cur.price;
+      },0)
+    },
+    payDesc(){
+      if(this.totalPrice===0){
+        return `￥${this.minPrice}起送`;
+      }else if(this.totalPrice<this.minPrice){
+        let diff=this.minPrice-this.totalPrice;
+        return `还差￥${diff}起送`;
+      }else{
+        return '去结算';
+      }
     }
   },
   data(){
@@ -89,7 +116,7 @@ export default {
           top:-10px;
           right:-10px;
           color:white;
-          width:30px;
+          width:24px;
           height:16px;
           border-radius:15px;
           line-height: 15px;
@@ -103,6 +130,9 @@ export default {
       height:100%;
       .con-price{
         font-size:16px;
+        &.highlight{
+          color:white;
+        }
       }
       .con-line{
         height:24px;
@@ -118,9 +148,13 @@ export default {
       width:106px;
       flex:0 0 106px;
       height:100%;
-      font-size:16px;
+      font-size:14px;
       justify-content: center;
       background:#2b343c;
+      &.enough{
+        color:white;
+        background: #00b43c;
+      }
     }
   }
   @media screen and (max-width: 340px) {

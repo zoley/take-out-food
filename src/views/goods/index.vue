@@ -36,7 +36,7 @@
       </div>
     </div>
     <div class="shopcart-wrap">
-      <shopcart :selectFoods="selectFoods"/>  
+      <shopcart :selectFoods="selectFoods" :deliveryPrice="seller.deliveryPrice" :minPrice="seller.minPrice"/>  
     </div>
   </div>
 </template>
@@ -46,6 +46,14 @@ import BScroll from 'better-scroll'
 import shopcart from '@/components/shopcart/index'
 import stepper from '@/components/stepper/index'
 export default {
+  props:{
+    seller:{
+      type:Object,
+      default(){
+        return {};
+      }
+    }
+  },
   data() {
     return {
       goods:[],

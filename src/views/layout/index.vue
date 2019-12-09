@@ -1,30 +1,40 @@
 <template>
   <div class="layout">
-    <zHeader/>
+    <zHeader :header="seller"/>
     <div class="nav z-flex">
       <router-link class="nav-item" to="/goods">商品</router-link>
       <router-link class="nav-item" to="/ratings">评价</router-link>
       <router-link class="nav-item" to="/seller">商家</router-link>
     </div>
     <div class="content">
-      <router-view></router-view>
+      <router-view :seller="seller"></router-view>
     </div>
   </div>
 </template>
 <script>
-// import request from '@/utils/request'
+import request from '@/utils/request'
 import zHeader from '../header/index'
 export default{
   data(){
     return{
+      seller:{}
     }
   },
   components:{
     zHeader
   },
-  mounted(){
+  created(){
+    this.getSellerData();
   },
   methods:{
+    /**
+     * 获取header数据
+     */
+    getSellerData(){
+      request.get('/api/seller').then((res)=>{
+        this.seller=Object.assign({},res.data);
+      })
+    },
   }
 }
 </script>

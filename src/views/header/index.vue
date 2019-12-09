@@ -53,12 +53,11 @@
 </template>
 
 <script>
-import request from '@/utils/request'
 import star from '@/components/star/index'
 export default {
+  props:['header'],
   data() {
     return {
-      header:{},
       showMask:false,
       size:18
     };
@@ -67,17 +66,8 @@ export default {
     star
   },
   mounted() {
-    this.getHeaderData();
   },
   methods: {
-    /**
-     * 获取header数据
-     */
-    getHeaderData(){
-      request.get('/api/seller').then((res)=>{
-        this.header=Object.assign({},res.data);
-      })
-    },
     /**
      * 改变遮罩层显示与否
      */
