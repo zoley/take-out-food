@@ -53,6 +53,7 @@
       font-size:22px;
       color:#00a0dc;
       padding:0 8px;
+      cursor: pointer;
       &:active{
         color:#5e6c71;
       }
@@ -62,7 +63,7 @@
     transition:0.4s all ease;
   }
   .fade-enter,.fade-leave-to{
-    transform:translate3d(24px,0,0)rotate(180deg);
+    transform:translate3d(30px,0,0)rotate(180deg);
     opacity: 0;
   }
 </style>
