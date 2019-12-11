@@ -28,7 +28,7 @@
                 <p class="price"><span class="red-color">￥{{x.price}}</span><del v-if="x.oldPrice" class="gray-color">￥{{x.oldPrice}}</del></p>
               </div>
               <div class="stepper-wrap">
-                <stepper :food="x"/>
+                <stepper :food="x" @add="addFood"/>
               </div>
             </div>
           </div>
@@ -36,7 +36,7 @@
       </div>
     </div>
     <div class="shopcart-wrap">
-      <shopcart :selectFoods="selectFoods" :deliveryPrice="seller.deliveryPrice" :minPrice="seller.minPrice"/>  
+      <shopcart ref="shopcart" :selectFoods="selectFoods" :deliveryPrice="seller.deliveryPrice" :minPrice="seller.minPrice"/>  
     </div>
   </div>
 </template>
@@ -153,7 +153,13 @@ export default {
       }
       let rightDom=this.$refs.rightWrapper.getElementsByClassName('right-ul-hook');
       this.rightScroll.scrollToElement(rightDom[i],300);
-    }
+    },
+    addFood(target){
+      //优化体验，防止卡顿
+      this.$nextTick(() => {
+        this.$refs.shopcart.drop(target);
+      });
+    },
   }
 };
 </script>

@@ -1,10 +1,10 @@
 <template>
   <div class="stepper z-flex">
     <transition name="fade">
-      <i v-if="food.count>0" class="iconfont icon-jian" @click="countReduce"></i>
+      <i v-if="food.count>0" class="iconfont icon-jian" @click="countReduce($event)"></i>
     </transition>
     <span v-if="food.count>0" class="count">{{food.count}}</span>
-    <i class="iconfont icon-jia" @click="countAdd"></i>
+    <i class="iconfont icon-jia" @click.stop.prevent="countAdd($event)"></i>
   </div>
 </template>
 
@@ -27,14 +27,21 @@
      mounted(){
      },
      methods:{
-       countAdd(){
-         if(!this.food.hasOwnProperty('count')){
-           this.$set(this.food,'count',1)
-         }else{
+       countAdd(e){
+        if(!e._constructed) {
+          return;
+        }
+        if(!this.food.hasOwnProperty('count')){
+          this.$set(this.food,'count',1)
+        }else{
           this.food.count++;
-         }
+        }
+        this.$emit('add', e.target);
        },
-       countReduce(){
+       countReduce(e){
+        if(!e._constructed) {
+          return;
+        }
          this.food.count--;
        }
      }

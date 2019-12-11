@@ -1,7 +1,7 @@
 <template>
   <div class="header">
     <div class="header-top z-flex">
-      <div class="image-wrap">
+      <div class="image-wrap" @click="changeMask">
         <img class="img" :src="header.avatar" alt="">
       </div>
       <div class="content-wrap">
@@ -20,35 +20,37 @@
       <i class="iconfont icon-right"></i>
     </div>
     <img class="bg-fix" :src="header.avatar" alt="">
-    <div class="mask" v-show="showMask">
-      <div class="actual-content">
-        <h1 class="title">{{header.name}}</h1>
-        <star :score="header.score" :size="size"/>
-        <div class="line-box z-flex">
-          <div class="line"></div>
-          <div class="text">优惠信息</div>
-          <div class="line"></div>
+    <transition name="gradual">
+      <div class="mask" v-show="showMask">
+        <div class="actual-content">
+          <h1 class="title">{{header.name}}</h1>
+          <star :score="header.score" :size="size"/>
+          <div class="line-box z-flex">
+            <div class="line"></div>
+            <div class="text">优惠信息</div>
+            <div class="line"></div>
+          </div>
+          <ul class="ul">
+            <li v-for="(item,i) in header.supports" :key="i">
+              <b v-if="item.type===0" class="font-special red-color">减</b>
+              <b v-if="item.type===1" class="font-special blue-color">折</b>
+              <b v-if="item.type===2" class="font-special green-color">特</b>
+              <b v-if="item.type===3" class="font-special orange-color">惠</b>
+              {{item.description}}
+            </li>
+          </ul>
+          <div class="line-box z-flex">
+            <div class="line"></div>
+            <div class="text">商家公告</div>
+            <div class="line"></div>
+          </div>
+          <div class="declare">{{header.bulletin}}</div>
         </div>
-        <ul class="ul">
-          <li v-for="(item,i) in header.supports" :key="i">
-            <b v-if="item.type===0" class="font-special red-color">减</b>
-            <b v-if="item.type===1" class="font-special blue-color">折</b>
-            <b v-if="item.type===2" class="font-special green-color">特</b>
-            <b v-if="item.type===3" class="font-special orange-color">惠</b>
-            {{item.description}}
-          </li>
-        </ul>
-        <div class="line-box z-flex">
-          <div class="line"></div>
-          <div class="text">商家公告</div>
-          <div class="line"></div>
+        <div class="actual-footer z-flex" @click="changeMask">
+          <i class="iconfont icon-close"></i>
         </div>
-        <div class="declare">{{header.bulletin}}</div>
       </div>
-      <div class="actual-footer z-flex" @click="changeMask">
-        <i class="iconfont icon-close"></i>
-      </div>
-    </div>
+    </transition>  
   </div>
 </template>
 
@@ -177,6 +179,13 @@ export default {
       background: rgba(7,17,27,0.9);
       color:white;
       overflow: auto;
+      &.gradual-enter-active,&.gradual-leave-active{
+        transition:0.4s all;
+        opacity: 1;
+      }
+      &.gradual-enter,&.gradual-leave-to{
+        opacity: 0;
+      }
       .actual-content{
         min-height:100vh;
         padding-bottom:70px;
