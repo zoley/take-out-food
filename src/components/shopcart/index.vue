@@ -383,7 +383,7 @@ export default {
     left: 0;
     right: 0;
     bottom: 0;
-    z-index: 40;
+    z-index: 48;
     background: rgba(7, 17, 27, 0.6);
     backdrop-filter: blur(10px);
     &.fade-enter-active,

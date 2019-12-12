@@ -1,7 +1,7 @@
 <template>
   <div class="stepper z-flex">
     <transition name="fade">
-      <i v-if="food.count>0" class="iconfont icon-jian" @click="countReduce($event)"></i>
+      <i v-if="food.count>0" class="iconfont icon-jian"  @click.stop.prevent="countReduce($event)"></i>
     </transition>
     <span v-if="food.count>0" class="count">{{food.count}}</span>
     <i class="iconfont icon-jia" @click.stop.prevent="countAdd($event)"></i>

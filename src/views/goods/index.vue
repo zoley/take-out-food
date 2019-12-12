@@ -19,7 +19,7 @@
         <div class="right-content">
           <div class="right-ul right-ul-hook" v-for="(item,index) in goods" :key="index">
             <h2 class="right-title">{{item.name}}</h2>
-            <div class="right-li z-flex" v-for="(x,y) in item.foods" :key="y">
+            <div class="right-li z-flex" v-for="(x,y) in item.foods" :key="y" @click="onSelectedFood(x,$event)">
               <img class="li-img" :src="x.icon" alt="">
               <div class="right-con">
                 <h4 class="con-title">{{x.name}}</h4>
@@ -38,6 +38,7 @@
     <div class="shopcart-wrap">
       <shopcart ref="shopcart" :selectFoods="selectFoods" :deliveryPrice="seller.deliveryPrice" :minPrice="seller.minPrice"/>  
     </div>
+    <foodDetail ref="foodDetail" :selectedFood="selectedFood"/>
   </div>
 </template>
 <script>
@@ -45,6 +46,7 @@ import request from '@/utils/request'
 import BScroll from 'better-scroll'
 import shopcart from '@/components/shopcart/index'
 import stepper from '@/components/stepper/index'
+import foodDetail from '@/components/foodDetail/index'
 export default {
   props:{
     seller:{
@@ -60,7 +62,8 @@ export default {
       listHeight:[],
       leftScroll:null,
       rightScroll:null,
-      scrollY:0
+      scrollY:0,
+      selectedFood:{}
     };
   },
   created(){
@@ -110,7 +113,8 @@ export default {
   },
   components:{
     shopcart,
-    stepper
+    stepper,
+    foodDetail
   },
   methods: {
     initScroll(){
@@ -160,6 +164,15 @@ export default {
         this.$refs.shopcart.drop(target);
       });
     },
+    //选中某个food
+    onSelectedFood(food,e){
+      if(!e._constructed){
+        e.preventDefault();
+      }
+      console.log(food)
+      this.selectedFood=food;
+      this.$refs.foodDetail.showRatings();
+    }
   }
 };
 </script>
@@ -271,6 +284,7 @@ export default {
       left:0;
       height:48px;
       width:100%;
+      z-index:50;
       background: #141d27;
     }
   }
