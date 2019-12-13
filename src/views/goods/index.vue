@@ -171,7 +171,7 @@ export default {
       }
       console.log(food)
       this.selectedFood=food;
-      this.$refs.foodDetail.showRatings();
+      this.$refs.foodDetail.showDetail();
     }
   }
 };

@@ -1,6 +1,7 @@
 <template>
   <transition name="shift">
     <div class="detail-box" v-show="isShow">
+      <div class="back iconfont icon-left" @click="closeDetail"></div>
       <div class="detail-wrap">
         <div class="img-header">
           <img class="img" :src="selectedFood.image" alt="">
@@ -29,8 +30,11 @@ export default {
     console.log(this.selectedFood);
   },
   methods: {
-    showRatings(){
+    showDetail(){
       this.isShow=true;
+    },
+    closeDetail(){
+      this.isShow=false;
     }
   }
 };
@@ -51,6 +55,16 @@ export default {
     &.shift-enter,&.shift-leave-to{
       transform:translate3d(100%,0,0);
       opacity: 0;
+    }
+    .back{
+      font-size:36px;
+      color:white;
+      padding:0 4px;
+      position:absolute;
+      top:10px;
+      left:0px;
+      z-index:10;
+      cursor: pointer;
     }
     .img-header{
       width:100%;
