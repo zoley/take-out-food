@@ -6,6 +6,11 @@
         <div class="img-header">
           <img class="img" :src="selectedFood.image" alt="">
         </div>
+        <div class="detail-con">
+          <h3>{{selectedFood.name}}</h3>
+          <p class="con-sell">月售 {{selectedFood.sellCount}} 份  &nbsp;&nbsp; 好评率 {{selectedFood.rating}}%</p>
+          <p class="price"><span class="red-color">￥{{selectedFood.price}}</span><del v-if="selectedFood.oldPrice" class="gray-color">￥{{selectedFood.oldPrice}}</del></p>  
+        </div>
       </div>
     </div>
   </transition>
