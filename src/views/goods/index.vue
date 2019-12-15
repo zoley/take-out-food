@@ -38,7 +38,7 @@
     <div class="shopcart-wrap">
       <shopcart ref="shopcart" :selectFoods="selectFoods" :deliveryPrice="seller.deliveryPrice" :minPrice="seller.minPrice"/>  
     </div>
-    <foodDetail ref="foodDetail" :selectedFood="selectedFood"/>
+    <foodDetail ref="foodDetail" :selectedFood="selectedFood"  @detailAddFood="addFood"/>
   </div>
 </template>
 <script>
@@ -169,7 +169,6 @@ export default {
       if(!e._constructed){
         e.preventDefault();
       }
-      console.log(food)
       this.selectedFood=food;
       this.$refs.foodDetail.showDetail();
     }
