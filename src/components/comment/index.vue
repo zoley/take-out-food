@@ -10,17 +10,36 @@
     </div>
     <ul class="ul">
       <li v-for="(val,key) in comments" :key="key" v-show="onlyShow(val.rateType,val.text)">
-        <div class="z-flex title">
-          <span class="date">{{val.rateTime}}</span>
+        <div class="z-flex title" v-if="mark==='detailComment'">
+          <span class="date">{{val.rateTime | formatDate}}</span>
           <div class="z-flex user-info">
             <span>{{val.username}}</span>
             <img :src="val.avatar" alt="">
           </div>
         </div>
-        <div class="z-flex content">
+        <div class="z-flex content" v-if="mark==='detailComment'">
           <i class="iconfont icon-zan" v-if="val.rateType===0"></i>
           <i class="iconfont icon-tread negative" v-if="val.rateType===1"></i>
           <p class="text">{{val.text}}</p>
+        </div>
+        <div v-if="mark==='ratingComment'" class="rating-con z-flex">
+          <div class="con-img"><img :src="val.avatar" alt=""></div>
+          <div class="con-body">
+            <div class="z-flex user-info">
+              <span>{{val.username}}</span>
+              <span class="date">{{val.rateTime | formatDate}}</span>
+            </div>
+            <div class="user-star">
+              <span class="temp-star"><star :score="val.score" :size="14" :letterSpace="1"/></span>
+              <span  class="delivery" v-if="val.deliveryTime">{{val.deliveryTime}}分钟送达</span>
+            </div>
+            <p class="user-text">{{val.text}}</p>
+            <div class="label-box z-flex">
+              <i class="iconfont icon-zan" v-if="val.rateType===0"></i>
+              <i class="iconfont icon-tread negative" v-if="val.rateType===1"></i>
+              <span v-for="(x,y) in val.recommend" :key="y" class="label">{{x}}</span>
+            </div>
+          </div>
         </div>
       </li>
     </ul>
@@ -28,6 +47,7 @@
 </template>
 
 <script>
+import star from '@/components/star/index'
 const POSITIVE=0;
 const NEGATIVE=1;
 const ALL=2;
@@ -55,6 +75,12 @@ export default {
           type:NEGATIVE,
           number:0
         }]
+      }
+    },
+    mark:{
+      type:String,
+      default(){
+        return 'detailComment'
       }
     }
   },
@@ -86,6 +112,9 @@ export default {
       })
     }
   },
+  components:{
+    star
+  },
   data() {
     return {
       activeTab:ALL,
@@ -113,6 +142,18 @@ export default {
         return this.activeTab===type;
       }
     }
+  },
+  filters:{
+    formatDate(timestamp) {
+      timestamp = new Date(timestamp);
+      var year=timestamp.getFullYear();
+      var month=timestamp.getMonth()+1;
+      var dateTime=timestamp.getDate();
+      var hour=timestamp.getHours();
+      var minute=timestamp.getMinutes();
+      var second=timestamp.getSeconds();
+      return year+"-"+(month>9?month:"0"+month)+"-"+(dateTime>9?dateTime:"0"+dateTime)+" "+(hour>9?hour:"0"+hour)+":"+(minute>9?minute:"0"+minute);
+    } 
   }
 };
 </script>
@@ -122,7 +163,7 @@ export default {
     overflow:hidden;
     .tab-wrap{
       margin:0 18px;
-      padding-bottom:12px;
+      padding:12px 0;
       border-bottom:1px solid rgba(7,17,27,0.1);
       .tab-item{
         padding:8px 12px;
@@ -197,6 +238,75 @@ export default {
             color:rgba(7,17,27,1);
             line-height: 16px;
             font-size:12px;
+          }
+        }
+        .rating-con{
+          align-items: flex-start;
+          .con-img{
+            flex:0 0 28px;
+            margin-right:12px;
+            width:28px;
+            height:28px;
+            overflow:hidden;
+            border-radius:50%;
+            img{width:100%;height:100%;vertical-align: top;}
+          }
+          .con-body{
+            flex:1;
+            .user-info{
+              justify-content: space-between;
+              font-size:12px;
+              color:rgb(7,17,27);
+              .date{
+                color:rgba(7,17,27,0.5);
+              }
+            }
+            .user-star{
+              width:100%;
+              margin:10px 0;
+              .temp-star{
+                width:90px;
+                display:inline-block;
+                .star{
+                  justify-content: flex-start;
+                }
+              }
+              .delivery{
+                color:rgba(7,17,27,0.5);
+              }
+            }
+            .user-text{
+              line-height:20px;
+              font-size:14px;
+              color:rgba(7,17,27,1);
+              margin-bottom:10px;
+            }
+            .label-box{
+              width:100%;
+              flex-wrap: wrap;
+              .iconfont{
+                color:rgba(0,160,220,1);
+                font-size:14px;
+                margin-right:8px;
+                margin-bottom:4px;
+                &.negative{
+                  color:#ccc;
+                }
+              }
+              .label{
+                display:inline-block;
+                max-width:70px;
+                border:1px solid rgba(7,17,27,0.1);
+                padding:3px 8px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                color:rgba(7,17,27,0.6);
+                font-size:12px;
+                margin-right:8px;
+                margin-bottom:4px;
+              }
+            }
           }
         }
       }

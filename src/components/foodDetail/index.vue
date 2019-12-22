@@ -194,7 +194,8 @@ export default {
     .detail-comment{
       padding:0;
       .desc-title{
-        padding:18px 18px 10px; 
+        padding:18px 18px 6px; 
+        margin-bottom:0;
       }
     }
   }

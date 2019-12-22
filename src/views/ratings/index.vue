@@ -1,5 +1,5 @@
 <template>
-  <div class="ratings-box">
+  <div class="ratings-box" ref="ratingsBox">
     <div class="ratings-wrap">
       <div class="overview z-flex">
         <div class="overview-left z-flex">
@@ -25,11 +25,15 @@
         </div>
       </div>
       <div class="separate-line"></div>
+      <comment :comments="ratings" @refresh="refreshSCroll" :mark="mark" :tabList="tabList"/>
     </div>
   </div>
 </template>
 <script>
+import comment from '@/components/comment/index'
 import star from '@/components/star/index'
+import request from '@/utils/request'
+import BScroll from 'better-scroll'
 export default {
   props:{
     seller:{
@@ -41,17 +45,51 @@ export default {
   },
   data() {
     return {
-  
+      ratings:[],
+      ratingScroll:null,
+      mark:'ratingComment',
+      tabList:[{
+          name:'全部',
+          type:2,
+          number:0
+        },{
+          name:'满意',
+          type:0,
+          number:0
+        },{
+          name:'不满意',
+          type:1,
+          number:0
+        }]
     }
   },
   components:{
-    star
+    star,
+    comment
+  },
+  created(){
+    this.getRatingsData();
   },
   mounted() {
-    console.log(this.seller);
+    this.initSCroll();
   },
   methods: {
-
+    getRatingsData(){
+      request('/api/ratings').then((res)=>{
+        this.ratings=[...res.data];
+      })
+    },
+    initSCroll(){
+      this.ratingScroll=new BScroll(this.$refs.ratingsBox,{
+        click:true,
+        scrollY:true
+      })
+    },
+    refreshSCroll(){
+      this.$nextTick(()=>{
+        this.ratingScroll.refresh();
+      })
+    }
   }
 };
 </script>
