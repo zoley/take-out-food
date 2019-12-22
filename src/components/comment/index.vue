@@ -151,7 +151,7 @@ export default {
       var dateTime=timestamp.getDate();
       var hour=timestamp.getHours();
       var minute=timestamp.getMinutes();
-      var second=timestamp.getSeconds();
+      // var second=timestamp.getSeconds();
       return year+"-"+(month>9?month:"0"+month)+"-"+(dateTime>9?dateTime:"0"+dateTime)+" "+(hour>9?hour:"0"+hour)+":"+(minute>9?minute:"0"+minute);
     } 
   }

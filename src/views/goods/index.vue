@@ -98,17 +98,19 @@ export default {
   watch:{
     //左侧居中跟着走啊喂
     current(val){
-      let leftDom=this.$refs.leftWrapper.getElementsByClassName('left-li-hook');
-      let curDom=leftDom[val];
-      let dis=this.$refs.leftWrapper.getElementsByClassName('left-ul-hook')[0].offsetHeight-this.$refs.leftWrapper.offsetHeight;
-      let y=curDom.offsetTop+curDom.offsetHeight/2-this.$refs.leftWrapper.offsetHeight/2;
-      // console.log(curDom.offsetTop,curDom.offsetHeight/2,this.$refs.leftWrapper.offsetHeight/2,y,dis)
-      if(y<=0 || dis<=0){
-        y=0;
-      }else if(y>=dis && dis>0){
-        y=dis;
-      }
-      this.leftScroll.scrollTo(0,-y,300);
+      this.$nextTick(()=>{
+        let leftDom=this.$refs.leftWrapper.getElementsByClassName('left-li-hook');
+        let curDom=leftDom[val];
+        let dis=this.$refs.leftWrapper.getElementsByClassName('left-ul-hook')[0].offsetHeight-this.$refs.leftWrapper.offsetHeight;
+        let y=curDom.offsetTop+curDom.offsetHeight/2-this.$refs.leftWrapper.offsetHeight/2;
+        // console.log(curDom.offsetTop,curDom.offsetHeight/2,this.$refs.leftWrapper.offsetHeight/2,y,dis)
+        if(y<=0 || dis<=0){
+          y=0;
+        }else if(y>=dis && dis>0){
+          y=dis;
+        }
+        this.leftScroll.scrollTo(0,-y,300);
+      })
     }
   },
   components:{

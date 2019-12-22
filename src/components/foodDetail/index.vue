@@ -181,9 +181,9 @@ export default {
       padding:18px;
       .desc-title{
         font-size:14px;
-        font-weight:500;
+        font-weight:600;
         color:#333;
-        margin-bottom:10px;
+        margin-bottom:12px;
       }
       .desc-con{
         color:#888;

@@ -70,13 +70,13 @@ export default {
   created(){
     this.getRatingsData();
   },
-  mounted() {
-    this.initSCroll();
-  },
   methods: {
     getRatingsData(){
       request('/api/ratings').then((res)=>{
         this.ratings=[...res.data];
+        this.$nextTick(()=>{
+          this.initSCroll();
+        })
       })
     },
     initSCroll(){
