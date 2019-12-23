@@ -49,7 +49,7 @@
         <h3 class="desc-title">商家实景</h3>
         <div class="imgs-box" ref="imgBox">
           <div class="imgs-wrap" ref="imgWrap">
-            <img v-for="(item,i) in seller.pics" :src="item" alt="" :key="i" class="business-img">
+            <img v-for="(item,i) in seller.pics" :src="item" alt="" :key="i" class="business-img" preview="0" :preview-text="'描述文字'+i">
           </div>
         </div>
       </div>
@@ -65,6 +65,16 @@
 <script>
 import star from '@/components/star/index'
 import BScroll from 'better-scroll'
+import Vue from 'vue'
+import VuePreview from 'vue-photo-preview'
+import 'vue-photo-preview/dist/skin.css'
+Vue.use(VuePreview,{
+  fullscreenEl: false
+})
+// import 'viewerjs/dist/viewer.css'
+// import Viewer from 'v-viewer'
+// import Vue from 'vue'
+// Vue.use(Viewer)
 export default {
   props:{
     seller:{
@@ -124,6 +134,8 @@ export default {
           }else{
             this.imgScroll.refresh();
           }
+          //vue-photo-preview
+          this.$previewRefresh();
         }
       })
     },
