@@ -127,7 +127,8 @@ export default {
       this.rightScroll=new BScroll(this.$refs.rightWrapper,{
         scrollY:true,
         click:true,
-        probeType:3
+        probeType:3,
+        mouseWheel:true
       });
       this.rightScroll.on('scroll',(pos)=>{
         this.scrollY=Math.round(Math.abs(pos.y));
